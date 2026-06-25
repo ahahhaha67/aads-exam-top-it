@@ -66,6 +66,21 @@ namespace krivoshapov
     v.data_[v.size_] = val;
     ++v.size_;
   }
+
+  template <class T, class Pred>
+  void removeIf(Vector<T> &v, Pred pred)
+  {
+    std::size_t write = 0;
+    for (std::size_t read = 0; read < v.size_; ++read)
+    {
+      if (!pred(v.data_[read]))
+      {
+        v.data_[write] = v.data_[read];
+        ++write;
+      }
+    }
+    v.size_ = write;
+  }
 }
 
 #endif
