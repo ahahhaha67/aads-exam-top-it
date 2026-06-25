@@ -49,13 +49,14 @@ int main(int argc, char **argv)
   if (argc > 3)
   {
     std::cerr << "Invalid arguments\n";
-    return 1;
+    return 2;
   }
+
   Args args = parseArgs(argc, argv);
   if (!args.valid)
   {
     std::cerr << "Invalid arguments\n";
-    return 1;
+    return 2;
   }
 
   std::ifstream inStream;

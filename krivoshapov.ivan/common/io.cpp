@@ -39,6 +39,16 @@ namespace krivoshapov
         s.pop_back();
       }
     }
+
+    bool isWhitespaceOnly(const std::string &s)
+    {
+      for (char c : s)
+      {
+        if (!std::isspace(static_cast<unsigned char>(c)))
+          return false;
+      }
+      return true;
+    }
   }
 
   ReadResult readPersons(std::istream &in, Vector<Person> &out)
@@ -47,6 +57,9 @@ namespace krivoshapov
     std::string line;
     while (std::getline(in, line))
     {
+      if (isWhitespaceOnly(line))
+        continue;
+
       std::size_t idx = 0;
       std::size_t id = 0;
       try
