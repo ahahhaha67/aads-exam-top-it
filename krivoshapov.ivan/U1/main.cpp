@@ -59,8 +59,6 @@ int main(int argc, char **argv)
   }
 
   std::ifstream inStream;
-  std::ofstream outStream;
-
   if (args.inFile != nullptr)
   {
     inStream.open(args.inFile);
@@ -70,25 +68,38 @@ int main(int argc, char **argv)
       return 2;
     }
   }
-  if (args.outFile != nullptr)
-  {
-    outStream.open(args.outFile);
-    if (!outStream.is_open())
-    {
-      std::cerr << "Cannot open file: " << args.outFile << '\n';
-      return 2;
-    }
-  }
-
   std::istream &in = args.inFile ? static_cast<std::istream &>(inStream) : std::cin;
-  std::ostream &out = args.outFile ? static_cast<std::ostream &>(outStream) : std::cout;
 
   krivoshapov::Vector<krivoshapov::Person> persons;
   krivoshapov::init(persons);
 
-  krivoshapov::ReadResult result = krivoshapov::readPersons(in, persons);
-  krivoshapov::writePersons(out, persons);
-  std::cerr << result.valid << ' ' << result.ignored << '\n';
+  krivoshapov::readPersons(in, persons);
+
+  if (args.inFile != nullptr)
+  {
+    inStream.close();
+  }
+
+  if (args.outFile != nullptr)
+  {
+    std::cout << "in file " << args.outFile << '\n';
+  }
+
+  krivoshapov::writePersons(std::cout, persons);
+
+  if (args.outFile != nullptr)
+  {
+    std::ofstream outStream;
+    outStream.open(args.outFile);
+    if (!outStream.is_open())
+    {
+      std::cerr << "Cannot open file: " << args.outFile << '\n';
+      krivoshapov::destroy(persons);
+      return 2;
+    }
+    krivoshapov::writePersons(outStream, persons);
+    outStream.close();
+  }
 
   krivoshapov::destroy(persons);
   return 0;
