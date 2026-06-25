@@ -81,16 +81,9 @@ int main(int argc, char **argv)
     inStream.close();
   }
 
+  std::ofstream outStream;
   if (args.outFile != nullptr)
   {
-    std::cout << "in file " << args.outFile << '\n';
-  }
-
-  krivoshapov::writePersons(std::cout, persons);
-
-  if (args.outFile != nullptr)
-  {
-    std::ofstream outStream;
     outStream.open(args.outFile);
     if (!outStream.is_open())
     {
@@ -98,14 +91,22 @@ int main(int argc, char **argv)
       krivoshapov::destroy(persons);
       return 2;
     }
-    krivoshapov::writePersons(outStream, persons);
+  }
+  std::ostream &out = args.outFile ? static_cast<std::ostream &>(outStream) : std::cout;
+
+  krivoshapov::writePersons(out, persons);
+
+  if (persons.size_ == 0)
+  {
+    out << '\n';
+  }
+
+  if (args.outFile != nullptr)
+  {
     outStream.close();
   }
 
-  if (result.valid + result.ignored > 0)
-  {
-    std::cerr << result.valid << ' ' << result.ignored << '\n';
-  }
+  std::cerr << result.valid << ' ' << result.ignored << '\n';
 
   krivoshapov::destroy(persons);
   return 0;
