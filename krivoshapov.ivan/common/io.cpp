@@ -51,9 +51,8 @@ namespace krivoshapov
     }
   }
 
-  ReadResult readPersons(std::istream &in, Vector<Person> &out)
+  void readPerson(std::istream &in, Vector<Person> &out)
   {
-    ReadResult result = {0, 0};
     std::string line;
     while (std::getline(in, line))
     {
@@ -68,7 +67,6 @@ namespace krivoshapov
       }
       catch (const std::exception &)
       {
-        ++result.ignored;
         continue;
       }
       std::string info = line.substr(idx);
@@ -76,19 +74,15 @@ namespace krivoshapov
       trimTrailing(info);
       if (info.empty())
       {
-        ++result.ignored;
         continue;
       }
       if (containsId(out, id))
       {
-        ++result.ignored;
         continue;
       }
       Person p = {id, info};
       pushBack(out, p);
-      ++result.valid;
     }
-    return result;
   }
 
   void writePersons(std::ostream &out, const Vector<Person> &persons)

@@ -74,7 +74,7 @@ int main(int argc, char **argv)
   krivoshapov::Vector<krivoshapov::Person> persons;
   krivoshapov::init(persons);
 
-  krivoshapov::ReadResult result = krivoshapov::readPersons(in, persons);
+  krivoshapov::readPersons(in, persons);
 
   if (args.inFile != nullptr)
   {
