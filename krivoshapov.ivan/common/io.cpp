@@ -39,6 +39,16 @@ namespace krivoshapov
         s.pop_back();
       }
     }
+
+    bool isWhitespaceOnly(const std::string &s)
+    {
+      for (std::size_t i = 0; i < s.size(); ++i)
+      {
+        if (!std::isspace(static_cast<unsigned char>(s[i])))
+          return false;
+      }
+      return true;
+    }
   }
 
   ReadResult readPersons(std::istream &in, Vector<Person> &out)
@@ -47,6 +57,9 @@ namespace krivoshapov
     std::string line;
     while (std::getline(in, line))
     {
+      if (isWhitespaceOnly(line))
+        continue;
+
       std::size_t idx = 0;
       std::size_t id = 0;
       try
@@ -82,11 +95,7 @@ namespace krivoshapov
   {
     for (std::size_t i = 0; i < persons.size_; ++i)
     {
-      if (i > 0)
-        out << '\n';
-      out << persons.data_[i].id << ' ' << persons.data_[i].info;
+      out << persons.data_[i].id << ' ' << persons.data_[i].info << '\n';
     }
-    if (persons.size_ > 0)
-      out << '\n';
   }
 }
