@@ -77,3 +77,12 @@ namespace krivoshapov
     }
     return result;
   }
+
+  void writePersons(std::ostream &out, const Vector<Person> &persons)
+  {
+    for (std::size_t i = 0; i < persons.size_; ++i)
+    {
+      out << persons.data_[i].id << ' ' << persons.data_[i].info << '\n';
+    }
+  }
+}
